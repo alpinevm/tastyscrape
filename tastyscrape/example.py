@@ -19,44 +19,10 @@ LOGGER = logging.getLogger(__name__)
 
 
 async def main_loop(session: TastyAPISession, streamer: DataStreamer):
-    # sub_values = {
-    #     "Greeks": [
-    #         ".VIX180718C21",
-    #         ".YUM180518C95"
-    #     ]
-    # }
+
     sub_values = {
         "Quote": ["/ES"]
     }
-
-    accounts = await TradingAccount.get_remote_accounts(session)
-    acct = accounts[0]
-    LOGGER.info('Accounts available: %s', accounts)
-
-    orders = await Order.get_remote_orders(session, acct)
-    LOGGER.info('Number of active orders: %s', len(orders))
-
-    # Execute an order
-
-    details = OrderDetails(
-        type=OrderType.LIMIT,
-        price=Decimal(400),
-        price_effect=OrderPriceEffect.CREDIT)
-    new_order = Order(details)
-
-    opt = Option(
-        ticker='AKS',
-        quantity=1,
-        expiry=get_third_friday(date.today()),
-        strike=Decimal(3),
-        option_type=OptionType.CALL,
-        underlying_type=UnderlyingType.EQUITY
-    )
-    new_order.add_leg(opt)
-
-    res = await acct.execute_order(new_order, session, dry_run=True)
-    LOGGER.info('Order executed successfully: %s', res)
-
     # Get an options chain
     undl = underlying.Underlying('AKS')
 
