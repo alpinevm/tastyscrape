@@ -6,9 +6,9 @@ import aiocometd
 import requests
 from aiocometd import ConnectionType
 
-from tastyworks import dxfeed
-from tastyworks.dxfeed import mapper as dxfeed_mapper
-from tastyworks.models.session import TastyAPISession
+from tastyscrape import dxfeed
+from tastyscrape.dxfeed import mapper as dxfeed_mapper
+from tastyscrape.models.session import TastyAPISession
 
 LOGGER = logging.getLogger(__name__)
 
@@ -16,7 +16,7 @@ LOGGER = logging.getLogger(__name__)
 class DataStreamer(object):
     def __init__(self, session: TastyAPISession):
         if not session.is_active():
-            raise Exception('TastyWorks API session not active/valid')
+            raise Exception('Tastyworks API session not active/valid')
         self.tasty_session = session
         self.cometd_client = None
         self.subs = {}

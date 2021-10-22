@@ -1,6 +1,6 @@
 import logging
 
-from tastyworks.models import session
+from tastyscrape.models import session
 
 LOGGER = logging.getLogger(__name__)
 

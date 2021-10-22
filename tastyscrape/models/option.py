@@ -4,8 +4,8 @@ from enum import Enum
 
 from dataclasses import dataclass
 
-from tastyworks.models.security import Security
-from tastyworks.models.underlying import UnderlyingType
+from tastyscrape.models.security import Security
+from tastyscrape.models.underlying import UnderlyingType
 
 
 class OptionType(Enum):

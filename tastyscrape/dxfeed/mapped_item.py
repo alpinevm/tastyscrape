@@ -1,7 +1,7 @@
 import abc
 import logging
 
-from tastyworks.dxfeed import mapper as mapper
+from tastyscrape.dxfeed import mapper as mapper
 
 LOGGER = logging.getLogger(__name__)
 

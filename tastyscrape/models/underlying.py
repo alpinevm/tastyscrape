@@ -1,6 +1,6 @@
 from enum import Enum
 
-from tastyworks.models.security import Security
+from tastyscrape.models.security import Security
 
 
 class UnderlyingType(Enum):

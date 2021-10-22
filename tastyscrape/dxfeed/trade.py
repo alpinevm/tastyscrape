@@ -1,4 +1,4 @@
-from tastyworks.dxfeed.mapped_item import MappedItem
+from tastyscrape.dxfeed.mapped_item import MappedItem
 import datetime
 
 

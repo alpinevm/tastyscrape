@@ -7,7 +7,7 @@ from typing import List
 import aiohttp
 from dataclasses import dataclass, field
 
-from tastyworks.models.security import Security
+from tastyscrape.models.security import Security
 
 LOGGER = logging.getLogger(__name__)
 

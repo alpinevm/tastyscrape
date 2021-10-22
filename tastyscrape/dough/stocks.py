@@ -1,6 +1,6 @@
 import aiohttp
 
-from tastyworks.dough import BASE_URL
+from tastyscrape.dough import BASE_URL
 
 
 async def stock_search(symbols):

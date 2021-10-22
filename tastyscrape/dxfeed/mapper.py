@@ -1,6 +1,6 @@
 import logging
 
-from tastyworks.dxfeed import greeks, quote, trade, summary, profile
+from tastyscrape.dxfeed import greeks, quote, trade, summary, profile
 
 LOGGER = logging.getLogger(__name__)
 KEY_MAP = {}
