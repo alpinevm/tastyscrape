@@ -1,4 +1,3 @@
-import logging
 from datetime import date, datetime
 from decimal import Decimal
 from typing import Dict
@@ -7,8 +6,6 @@ import aiohttp
 
 from tastyscrape.bases.option import Option, OptionType
 from tastyscrape.bases.underlying import Underlying, UnderlyingType
-
-LOGGER = logging.getLogger(__name__)
 
 
 class OptionChain(object):
@@ -50,7 +47,6 @@ class OptionChain(object):
 
 
 async def get_option_chain(session, underlying: Underlying, expiration: date = None) -> OptionChain:
-    LOGGER.debug('Getting options chain for ticker: %s', underlying.ticker)
     data = await _get_tasty_option_chain_data(session, underlying)
     res = []
 

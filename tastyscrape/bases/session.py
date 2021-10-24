@@ -1,9 +1,6 @@
 import datetime
-import logging
 
 import requests
-
-LOGGER = logging.getLogger(__name__)
 
 
 class TastyAPISession(object):
