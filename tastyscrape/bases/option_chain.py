@@ -5,8 +5,8 @@ from typing import Dict
 
 import aiohttp
 
-from tastyscrape.models.option import Option, OptionType
-from tastyscrape.models.underlying import Underlying, UnderlyingType
+from tastyscrape.bases.option import Option, OptionType
+from tastyscrape.bases.underlying import Underlying, UnderlyingType
 
 LOGGER = logging.getLogger(__name__)
 

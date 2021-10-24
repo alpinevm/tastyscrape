@@ -4,8 +4,7 @@ from enum import Enum
 
 from dataclasses import dataclass
 
-from tastyscrape.models.security import Security
-from tastyscrape.models.underlying import UnderlyingType
+from tastyscrape.bases.underlying import UnderlyingType
 
 
 class OptionType(Enum):
@@ -14,7 +13,7 @@ class OptionType(Enum):
 
 
 @dataclass
-class Option(Security):
+class Option():
     ticker: str
     expiry: date
     strike: Decimal

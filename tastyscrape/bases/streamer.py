@@ -8,7 +8,7 @@ from aiocometd import ConnectionType
 
 from tastyscrape import dxfeed
 from tastyscrape.dxfeed import mapper as dxfeed_mapper
-from tastyscrape.models.session import TastyAPISession
+from tastyscrape.bases.session import TastyAPISession
 
 LOGGER = logging.getLogger(__name__)
 
