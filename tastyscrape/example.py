@@ -19,7 +19,7 @@ async def main_loop(session: TastyAPISession, streamer: DataStreamer):
         print(item.data)
 
 def main():
-    tasty_client = TastyAPISession("c4synerInvest", "CliffInvest7890!")
+    tasty_client = TastyAPISession("user","pass")
     streamer = DataStreamer(tasty_client)
     print(f'Streaming Token: {streamer.get_streamer_token()}')
     loop = asyncio.get_event_loop()
