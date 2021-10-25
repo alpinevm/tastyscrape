@@ -2,7 +2,7 @@ from datetime import date, datetime
 from decimal import Decimal
 from typing import Dict
 
-import aiohttp
+import requests
 
 from tastyscrape.bases.option import Option, OptionType
 from tastyscrape.bases.underlying import Underlying, UnderlyingType
@@ -28,8 +28,8 @@ class OptionChain(object):
         return self._get_filter_strategy('expiry')
 
 
-async def get_option_chain(session, underlying: Underlying, expiration: date = None) -> OptionChain:
-    data = await _get_tasty_option_chain_data(session, underlying)
+def get_option_chain(session, underlying: Underlying, expiration: date = None) -> OptionChain:
+    data = _get_tasty_option_chain_data(session, underlying)
     res = []
 
     for exp in data['expirations']:
@@ -52,15 +52,15 @@ async def get_option_chain(session, underlying: Underlying, expiration: date = N
     return OptionChain(res)
 
 
-async def _get_tasty_option_chain_data(session, underlying) -> Dict:
-    async with aiohttp.request(
+def _get_tasty_option_chain_data(session, underlying) -> Dict:
+    with requests.request(
             'GET',
             f'{session.API_url}/option-chains/{underlying.ticker}/nested',
             headers=session.get_request_headers()) as response:
 
-        if response.status != 200:
+        if response.status_code != 200:
             raise Exception(f'Could not find option chain for symbol {underlying.ticker}')
-        resp = await response.json()
+        resp = response.json()
 
         # NOTE: Have not seen an example with more than 1 item. No idea what that would be.
         return resp['data']['items'][0]
