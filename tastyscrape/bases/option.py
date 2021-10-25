@@ -55,6 +55,9 @@ class Option():
         )
         return res
 
+    def dxfeed_to_option(self):
+        pass
+
     def to_tasty_json(self):
         res = {
             'instrument-type': f'{self.underlying_type.value} Option',

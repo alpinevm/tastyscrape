@@ -1,3 +1,7 @@
+"""
+OptionChain class and functions built around requests instead of aiohttp;
+For use with "static" methods
+"""
 from datetime import date, datetime
 from decimal import Decimal
 from typing import Dict
@@ -26,6 +30,7 @@ class OptionChain(object):
 
     def get_all_expirations(self):
         return self._get_filter_strategy('expiry')
+
 
 
 def get_option_chain(session, underlying: Underlying, expiration: date = None) -> OptionChain:
