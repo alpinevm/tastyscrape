@@ -6,25 +6,47 @@ from tastyscrape.bases.session import TastyAPISession
 from tastyscrape.bases.streamer import DataStreamer
 from tastyscrape.bases.underlying import Underlying
 from tastyscrape.bases.underlying import UnderlyingType
-from tastyscrape.static.options.multi import chain_quote
+from tastyscrape.static.options.multi import chain_quote, option_quote
+from tastyscrape.bases.option import Option, OptionType
 from tastyscrape.static.util.options.search import get_all_expirations, get_all_strikes
 
+from datetime import date
+from decimal import Decimal
+
+import time
 def main():
     TW_USER = ""
     TW_PASS = ""
+
     #Authenticate with TastyWorks
     tasty_client = TastyAPISession(TW_USER, TW_PASS)
     streamer = DataStreamer(tasty_client)
     print(f'Streaming Token: {streamer.get_streamer_token()}')
 
     #Specify what chain we want
-    SPY = Underlying("F", UnderlyingType.EQUITY) #SPY ETF
+    SPY = Underlying("SPY", UnderlyingType.EQUITY) #SPY ETF
     expire = get_all_expirations(tasty_client, SPY)[0]
-    strikes = get_all_strikes(tasty_client,SPY,expire)
 
     #Get quote for the entire chain
     spy_chain = chain_quote(tasty_client,streamer,SPY,expire)
-    print(spy_chain)
+
+    #Now define some explicit contracts
+    qqq_call = Option(
+        ticker="QQQ",
+        expiry=date(year=2024,month=1,day=19),
+        strike=Decimal(400),
+        option_type=OptionType.CALL,
+        underlying_type=UnderlyingType.EQUITY,
+    )
+    f_put = Option(
+        ticker="F",
+        expiry=date(year=2024, month=1, day=19),
+        strike=Decimal(10),
+        option_type=OptionType.PUT,
+        underlying_type=UnderlyingType.EQUITY,
+    )
+
+    this_quote = option_quote(streamer,[qqq_call, f_put])
 
 
 

@@ -11,7 +11,6 @@ class OptionType(Enum):
     PUT = 'P'
     CALL = 'C'
 
-
 @dataclass
 class Option():
     ticker: str
@@ -55,8 +54,6 @@ class Option():
         )
         return res
 
-    def dxfeed_to_option(self):
-        pass
 
     def to_tasty_json(self):
         res = {
