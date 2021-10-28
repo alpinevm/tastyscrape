@@ -1,7 +1,8 @@
 from datetime import date, datetime
-from typing import List, Text
+from typing import List, Text, Dict
 from decimal import Decimal
 import math
+import re
 
 from tastyscrape.bases import static_option_chain
 from tastyscrape.bases.session import TastyAPISession
@@ -19,47 +20,21 @@ def get_all_strikes(session: TastyAPISession, underlying: Underlying, expiration
     return this_chain.get_all_strikes()
 
 def get_option_from_dxfeed(dxstr: Text, type: UnderlyingType) -> Option:
-    #There is probably a more efficient way to do this with regex but this is more readable and will do for now
-    ticker = ""
-    expiry = date(year=1970, month=1, day=1)
-    strike = Decimal(0)
-    option_type = ""
-    underlying_type = type
+    parsed = re.compile("(\.)([A-Z.]+)(\d{2})(\d{2})(\d{2})([CP])([\d.]+)").match(dxstr)
 
-    tickEnd = 0
-    tickComp = False
-    dateComp = False
-    pc = False
-    for i in range(len(dxstr)):
-        if(i != 0):
-            #build ticker:
-            if(dxstr[i].isdigit() and not tickComp):
-                ticker = dxstr[1:i]
-                tickEnd = i
-                tickComp = True
-            if(tickComp and not dateComp):
-                thisCenturyFloor = round(datetime.now().year-49,-2)
-                thisYearInt = datetime.now().year-thisCenturyFloor
-                yr = int(dxstr[tickEnd:tickEnd+2])+thisCenturyFloor
-                month = int(dxstr[tickEnd+2:tickEnd+4])
-                day = int(dxstr[tickEnd+4:tickEnd+6])
-                if(yr < thisYearInt): #this means that the expiration is 01, 02 with year being 98,99, add 100 years to the base
-                    yr += 100
-                expiry = date(year=yr,month=month,day=day)
-                dateComp = True
-            if(dateComp and not pc):
-                option_type = dxstr[i]
-                if(option_type == "P"):
-                    option_type = OptionType.PUT
-                else:
-                    option_type = OptionType.CALL
-                pc = True
-            if(pc):
-                strike = Decimal(dxstr[i+7:])
-                break
-    return Option(ticker=ticker,expiry=expiry,strike=strike,option_type=option_type,underlying_type=underlying_type)
 
-def organize_chain_response(chain: List) -> List:
-    #create a new strike entry todo
-    for resp in chain:
-        pass
+    thisCenturyFloor = round(datetime.now().year-49,-2)
+    thisYearInt = datetime.now().year-thisCenturyFloor
+    yr = parsed[3]+round(datetime.now().year-49,-2) < datetime.now().year-round(datetime.now().year-49,-2)
+    if(yr < thisYearInt): #this means that the expiration is 01, 02 with year being 98,99, add 100 years to the base
+        yr += 100
+
+    return Option(ticker=parsed[2], expiry=date(year=yr,month=parsed[4],day=parsed[5]), strike=strike, option_type=option_type, underlying_type=type)
+
+def parse_chain(resp_chain: List[[Dict]]) -> List[List[Dict]]:
+    #adds dictionaries for every
+    parser = re.compile("(\.)([A-Z.]+)(\d{2})(\d{2})(\d{2})([CP])([\d.]+)")
+    ichain = []
+    for option in resp_chain:
+        parsed_symbol = parser.match(option["eventSymbol"])
+        option["ticker"] =

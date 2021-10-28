@@ -8,7 +8,7 @@ from tastyscrape.bases.underlying import Underlying
 from tastyscrape.bases.underlying import UnderlyingType
 from tastyscrape.static.options.multi import chain_quote, option_quote
 from tastyscrape.bases.option import Option, OptionType
-from tastyscrape.static.util.options.search import get_all_expirations, get_all_strikes
+from tastyscrape.static.util.options.search import get_all_expirations, parse_chain
 
 from datetime import date
 from decimal import Decimal
@@ -24,11 +24,14 @@ def main():
     print(f'Streaming Token: {streamer.get_streamer_token()}')
 
     #Specify what chain we want
-    SPY = Underlying("SPY", UnderlyingType.EQUITY) #SPY ETF
+    SPY = Underlying("F", UnderlyingType.EQUITY) #SPY ETF
     expire = get_all_expirations(tasty_client, SPY)[0]
 
     #Get quote for the entire chain
     spy_chain = chain_quote(tasty_client,streamer,SPY,expire)
+
+    factored_chain = parse_chain(spy_chain)
+
 
     #Now define some explicit contracts
     qqq_call = Option(
@@ -47,6 +50,7 @@ def main():
     )
 
     this_quote = option_quote(streamer,[qqq_call, f_put])
+
 
 
 
