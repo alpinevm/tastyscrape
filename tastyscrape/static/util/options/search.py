@@ -1,7 +1,6 @@
 from datetime import date, datetime
 from typing import List, Text, Dict
 from decimal import Decimal
-import math
 import re
 
 from tastyscrape.bases import static_option_chain
@@ -21,20 +20,15 @@ def get_all_strikes(session: TastyAPISession, underlying: Underlying, expiration
 
 def get_option_from_dxfeed(dxstr: Text, type: UnderlyingType) -> Option:
     parsed = re.compile("(\.)([A-Z.]+)(\d{2})(\d{2})(\d{2})([CP])([\d.]+)").match(dxstr)
+    yr = int(parsed[3])+round(datetime.now().year-49,-2) if int(parsed[3])+round(datetime.now().year-49,-2) > datetime.now().year-round(datetime.now().year-49,-2) else int(parsed[3])+round(datetime.now().year-49,-2) + 100
+    ot = OptionType.PUT if parsed[6] == "P" else OptionType.CALL
+    return Option(ticker=parsed[2], expiry=date(year=yr,month=int(parsed[4]),day=int(parsed[5])), strike=Decimal(str(parsed[7])), option_type=ot, underlying_type=type)
 
-
-    thisCenturyFloor = round(datetime.now().year-49,-2)
-    thisYearInt = datetime.now().year-thisCenturyFloor
-    yr = parsed[3]+round(datetime.now().year-49,-2) < datetime.now().year-round(datetime.now().year-49,-2)
-    if(yr < thisYearInt): #this means that the expiration is 01, 02 with year being 98,99, add 100 years to the base
-        yr += 100
-
-    return Option(ticker=parsed[2], expiry=date(year=yr,month=parsed[4],day=parsed[5]), strike=strike, option_type=option_type, underlying_type=type)
-
-def parse_chain(resp_chain: List[[Dict]]) -> List[List[Dict]]:
+def parse_chain(resp_chain: List[Dict], type: UnderlyingType) -> List[Dict]:
     #adds dictionaries for every
-    parser = re.compile("(\.)([A-Z.]+)(\d{2})(\d{2})(\d{2})([CP])([\d.]+)")
     ichain = []
     for option in resp_chain:
-        parsed_symbol = parser.match(option["eventSymbol"])
-        option["ticker"] =
+        obj = get_option_from_dxfeed(option["eventSymbol"], type=type)
+        option["option"] = obj
+        ichain.append(option)
+    return ichain

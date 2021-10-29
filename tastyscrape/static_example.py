@@ -8,7 +8,7 @@ from tastyscrape.bases.underlying import Underlying
 from tastyscrape.bases.underlying import UnderlyingType
 from tastyscrape.static.options.multi import chain_quote, option_quote
 from tastyscrape.bases.option import Option, OptionType
-from tastyscrape.static.util.options.search import get_all_expirations, parse_chain
+from tastyscrape.static.util.options.search import get_all_expirations, parse_chain, get_option_from_dxfeed
 
 from datetime import date
 from decimal import Decimal
@@ -24,14 +24,14 @@ def main():
     print(f'Streaming Token: {streamer.get_streamer_token()}')
 
     #Specify what chain we want
-    SPY = Underlying("F", UnderlyingType.EQUITY) #SPY ETF
+    SPY = Underlying("SPY", UnderlyingType.EQUITY) #SPY ETF
     expire = get_all_expirations(tasty_client, SPY)[0]
 
     #Get quote for the entire chain
     spy_chain = chain_quote(tasty_client,streamer,SPY,expire)
 
-    factored_chain = parse_chain(spy_chain)
-
+    #Parse Chain: Insert a new dictionary key with an Option Object for each item in List
+    spy_chain_obj = parse_chain(spy_chain, UnderlyingType.EQUITY)
 
     #Now define some explicit contracts
     qqq_call = Option(
@@ -49,8 +49,11 @@ def main():
         underlying_type=UnderlyingType.EQUITY,
     )
 
+    #Get quotes of list
     this_quote = option_quote(streamer,[qqq_call, f_put])
 
+    #Get Option object from dxfeed symbol
+    this_obj = get_option_from_dxfeed(this_quote[0]["eventSymbol"], UnderlyingType.EQUITY)
 
 
 
