@@ -1,25 +1,23 @@
 """
-Example use case of static set;
+Example use case of static quote functions;
 Notice top-level absence of asyncio
 """
 from tastyscrape.bases.session import TastyAPISession
 from tastyscrape.bases.streamer import DataStreamer
 from tastyscrape.bases.underlying import Underlying
 from tastyscrape.bases.underlying import UnderlyingType
-from tastyscrape.static.options.multi import chain_quote, option_quote
+from tastyscrape.static.options.quote import chain_quote, option_quote
 from tastyscrape.bases.option import Option, OptionType
 from tastyscrape.static.util.options.search import get_all_expirations, parse_chain, get_option_from_dxfeed
 
+from dotenv import load_dotenv
+import os
 from datetime import date
 from decimal import Decimal
-
-import time
 def main():
-    TW_USER = ""
-    TW_PASS = ""
-
+    load_dotenv()
     #Authenticate with TastyWorks
-    tasty_client = TastyAPISession(TW_USER, TW_PASS)
+    tasty_client = TastyAPISession(os.getenv("TW_USER"), os.getenv("TW_PASS"))
     streamer = DataStreamer(tasty_client)
     print(f'Streaming Token: {streamer.get_streamer_token()}')
 
@@ -49,7 +47,7 @@ def main():
         underlying_type=UnderlyingType.EQUITY,
     )
 
-    #Get quotes of list
+    #Get quotes of list, note that validation will have to be done to verify they exist beforehand, else program will hang
     this_quote = option_quote(streamer,[qqq_call, f_put])
 
     #Get Option object from dxfeed symbol

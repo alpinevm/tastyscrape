@@ -1,9 +1,7 @@
 import abc
-import logging
 
 from tastyscrape.dxfeed import mapper as mapper
 
-LOGGER = logging.getLogger(__name__)
 
 
 class MappedItem(object):
