@@ -4,7 +4,7 @@ setup(
   packages = ['tastyscrape'], 
   version = '0.0.1',
   license='MIT',
-  description = 'Scrape live option, stock, and futures data from tastyworks.',  
+  description_file = 'Scrape live option, stock, and futures data from tastyworks.',  
   author = 'Cliff Syner', 
   author_email = 'cragfintech@gmail.com',  
   url = 'https://github.com/c4syner/tastyscrape',
