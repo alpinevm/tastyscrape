@@ -2,13 +2,13 @@ from distutils.core import setup
 setup(
   name = 'tastyscrape',
   packages = ['tastyscrape'], 
-  version = '0.0.1',
+  version = '0.0.2',
   license='MIT',
   description_file = 'Scrape live option, stock, and futures data from tastyworks.',  
   author = 'Cliff Syner', 
   author_email = 'cragfintech@gmail.com',  
   url = 'https://github.com/c4syner/tastyscrape',
-  download_url = 'https://github.com/c4syner/tastyscrape/archive/refs/tags/ts_v0.0.1.tar.gz',
+  download_url = 'https://github.com/c4syner/tastyscrape/archive/refs/tags/ts_v0.0.2.tar.gz',
   keywords = ['trading', 'stock', 'options'],
   install_requires=[
           'requests',
