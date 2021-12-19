@@ -10,14 +10,12 @@ from tastyscrape.static.options.quote import chain_quote, option_quote
 from tastyscrape.bases.option import Option, OptionType
 from tastyscrape.static.util.options.search import get_all_expirations, parse_chain, get_option_from_dxfeed
 
-from dotenv import load_dotenv
 import os
 from datetime import date
 from decimal import Decimal
 def main():
-    load_dotenv()
     #Authenticate with TastyWorks
-    tasty_client = TastyAPISession(os.getenv("TW_USER"), os.getenv("TW_PASS"))
+    tasty_client = TastyAPISession("user", "pass")
     streamer = DataStreamer(tasty_client)
     print(f'Streaming Token: {streamer.get_streamer_token()}')
 
