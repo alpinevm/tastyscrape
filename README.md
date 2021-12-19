@@ -7,7 +7,7 @@ Install with:
 <br>`pip install tastyscrape`<br>
 This library is built around asynchronous python `(await/async)`
 
-See the `example.py` in the root folder for a demonstration of how it works.
+See the `examples` folder for a demonstration of how it works.
 Only equity greeks and quotes work currently.
 
 Tastyscrape is inspired by the [tastyworks](https://github.com/boyan-soubachov/tastyworks_api) module.
