@@ -3,7 +3,7 @@ Scrape live option, stock, and futures data from tastyworks.
 
 ## Install
 Requires Python < 3.10.0 
-`pip install tastyscrape`<br>
+<br>`pip install tastyscrape`<br>
 This library is built around asynchronous python `(await/async)`
 
 See the `example.py` in the root folder for a demonstration of how it works.
