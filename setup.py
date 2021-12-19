@@ -1,7 +1,8 @@
 from distutils.core import setup
+import setuptools
 setup(
   name = 'tastyscrape',
-  packages = ['tastyscrape'], 
+  packages=setuptools.find_packages(),
   version = '0.0.2',
   license='MIT',
   description_file = 'Scrape live option, stock, and futures data from tastyworks.',  
